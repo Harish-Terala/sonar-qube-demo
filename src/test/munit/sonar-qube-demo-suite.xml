@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="sonar-qube-demo-suite.xml" />
+	<munit:test name="sonar-qube-demo-main-flow-test" doc:id="36a0ccb8-d763-4f09-8c61-e945ba5c2f45" >
+		<munit:behavior >
+			<munit:set-event doc:name="Set Input" doc:id="4fe3a833-059a-463e-878c-803a0a63a609" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://sonarqubedemomainflowtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://sonarqubedemomainflowtest\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to sonar-qube-demo-main-flow" doc:id="b7ac5820-e5e0-43d3-bc54-c76e18c469e4" name="sonar-qube-demo-main-flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="4925ddba-de8b-48f7-a57c-6dfef0bae550" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import sonarqubedemomainflowtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

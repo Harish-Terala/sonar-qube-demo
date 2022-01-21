@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="e6121f48-f19e-4da6-a764-bf9f2d0408e1" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="sonar-qube-demo-main-flow" doc:id="00be639b-6aa9-4fec-b7a9-9bd725fc7d30" >
+		<http:listener doc:name="GET, /api/sonar-qube-demo" doc:id="5bcd5d9a-a53f-44f1-8aa5-b06e74dfd5a2" config-ref="HTTP_Listener_config" path="api/sonar-qube-demo" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="flow start - main flow" doc:id="ce0c3db0-8774-4f8f-9053-fc97bcfe7930" message="**** Flow start - main flow ****"/>
+		<flow-ref doc:name="flow ref to child flow" doc:id="784df331-a2c8-430b-b7c3-65ebbbbccc7f" name="sonar-qube-demo-child-flow"/>
+		<logger level="INFO" doc:name="flow end - main flow" doc:id="fd498bc0-29b4-4016-9e42-992ad92398ee" message="**** Flow end - main flow ****" />
+	</flow>
+	<sub-flow name="sonar-qube-demo-child-flow" doc:id="3907e708-3b3b-472a-b300-efbe0b98aee1" >
+		<set-payload value="Welcome to SonarQube integration with MuleSoft" doc:name="set static payload" doc:id="85f45a86-d4ad-4499-bbfb-b63721a85faf" />
+	</sub-flow>
+</mule>
